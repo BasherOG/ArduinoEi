@@ -40,8 +40,7 @@ void loop() {
     if (counter == 4) {
       if ((Eingabe[0] == '1') && (Eingabe[1] == '3') && (Eingabe[2] == '3') && (Eingabe[3] == '7')) {
         Serial.println("Richtig");
-        vorwaerts();
-        rueckwaerts();
+        bewegung();
       }
       else {
         Serial.println("Falsch");
@@ -55,28 +54,13 @@ void loop() {
   }
 }
 
-void vorwaerts()   //beide Motoren vorwärts drehen lassen
-{
-  // Motor A einschalten
+void bewegung(){
   digitalWrite(In1, HIGH);
   digitalWrite(In2, LOW);
-  // Geschwindigkeit 150 von max. 255
   analogWrite(EnA, 200);
   delay(4000);
-  // alle Motoren ausschalten
-  digitalWrite(In1, LOW);
-  digitalWrite(In2, LOW);  
-}
-
-void rueckwaerts()   //beide Motoren vorwärts drehen lassen
-{
-  // Motor A einschalten
   digitalWrite(In1, LOW);
   digitalWrite(In2, HIGH);
-  // Geschwindigkeit 150 von max. 255
-  analogWrite(EnA, 200);
   delay(4000);
-  // alle Motoren ausschalten
-  digitalWrite(In1, LOW);
-  digitalWrite(In2, LOW);  
-}
+  digitalWrite(In2, LOW);
+  }
