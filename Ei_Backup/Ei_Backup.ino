@@ -1,10 +1,5 @@
 #include "Arduino.h"
 #include "Keypad.h"
-
-#define EnA 11
-#define In1 10
-#define In2 12
-
 // Keypad
 const byte ROWS = 4; // vier Reihen
 const byte COLS = 4; // vier Spalten
@@ -18,19 +13,26 @@ byte rowPins[ROWS] = {9, 8, 7, 6}; // Pins fuer die Reihen
 byte colPins[COLS] = {5, 4, 3, 2}; // Pins fuer die Spalten
 char Eingabe[4];
 int counter = 0;
-int code = 0;
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
+// Motor
+int GSM1 = 12;
+int in1 = 11;
+int in2 = 10;
 
 
 void setup() {
   Serial.begin(9600);
-  pinMode(EnA, OUTPUT);
-  pinMode(In1, OUTPUT);
-  pinMode(In2, OUTPUT);
+  pinMode(GSM1, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
 }
 
 
+  digitalWrite(in1, HIGH);  // Motor 1 beginnt zu rotieren
+  digitalWrite(in2, LOW);
+
+  analogWrite(GSM1, 200);   // Motor 1 soll mit der Geschwindigkeit "200" (max. 255) rotieren
 void loop() {
   char key = keypad.getKey();
   if (key != NO_KEY) {
@@ -40,27 +42,16 @@ void loop() {
     if (counter == 4) {
       if ((Eingabe[0] == '1') && (Eingabe[1] == '3') && (Eingabe[2] == '3') && (Eingabe[3] == '7')) {
         Serial.println("Richtig");
-        bewegung();
       }
       else {
         Serial.println("Falsch");
       }
-//      Serial.println(sizeof(Eingabe));
-//      for (int i = 0; i < 4; i++) {
-//        Eingabe[i] = ' ';
-//      }
+      Serial.println(sizeof(Eingabe));
+      for (int i = 0; i < 4; i++) {
+        Eingabe[i] = ' ';
+      }
       counter = 0;
     }
   }
-}
 
-void bewegung(){
-  digitalWrite(In1, HIGH);
-  digitalWrite(In2, LOW);
-  analogWrite(EnA, 200);
-  delay(4000);
-  digitalWrite(In1, LOW);
-  digitalWrite(In2, HIGH);
-  delay(4000);
-  digitalWrite(In2, LOW);
-  }
+}
